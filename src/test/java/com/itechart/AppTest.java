@@ -1,38 +1,32 @@
 package com.itechart;
 
-import junit.framework.Test;
+import com.itechart.dao.DbDao;
+import com.itechart.entity.StudentEntity;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.sql.Date;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
+public class AppTest
+        extends TestCase {
+    private DbDao dao = new DbDao();
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
+    public void testApp() {
+        StudentEntity student = new StudentEntity();
+        student.setFirstName("Александр");
+        student.setLastName("Гилимович");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+        DateTime dt = formatter.parseDateTime("12-11-1990");
+        student.setBirthDate(new Date(dt.toDate().getTime()));
+        student.setSex(true);
+        StudentEntity studentFromDb = dao.add(student);
+        assertEquals("Александр", studentFromDb.getFirstName());
+        assertEquals("Гилимович", studentFromDb.getLastName());
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
     }
 }
