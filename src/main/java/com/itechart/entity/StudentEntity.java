@@ -2,32 +2,53 @@ package com.itechart.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 /**
  * Created by Aleksandr on 12.04.2017.
  */
 @Entity
-@Table(name = "student", schema = "students", catalog = "")
+@Table(name = "student")
 public class StudentEntity {
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private Date birthDate;
-    private boolean sex;
+    private Boolean sex;
     private Boolean hostelLive;
+    private Set<ExamResultEntity> examResults;
+    private Set<StudentResultEntity> studentResults;
 
     @Id
-    @Column(name = "id")
-    public int getId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, insertable = true, updatable = false, length = 10, precision = 0)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "first_name")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    public Set<StudentResultEntity> getStudentResults() {
+        return studentResults;
+    }
+
+    public void setStudentResults(Set<StudentResultEntity> studentResults) {
+        this.studentResults = studentResults;
+    }
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    public Set<ExamResultEntity> getExamResults() {
+        return examResults;
+    }
+
+    public void setExamResults(Set<ExamResultEntity> examResults) {
+        this.examResults = examResults;
+    }
+
+    @Column(name = "first_name", nullable = true, insertable = true, updatable = true, length = 50, precision = 0)
     public String getFirstName() {
         return firstName;
     }
@@ -36,8 +57,7 @@ public class StudentEntity {
         this.firstName = firstName;
     }
 
-    @Basic
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = true, insertable = true, updatable = true, length = 50, precision = 0)
     public String getLastName() {
         return lastName;
     }
@@ -46,8 +66,7 @@ public class StudentEntity {
         this.lastName = lastName;
     }
 
-    @Basic
-    @Column(name = "birth_date")
+    @Column(name = "birth_date", nullable = true, insertable = true, updatable = true, length = 10, precision = 0)
     public Date getBirthDate() {
         return birthDate;
     }
@@ -56,18 +75,16 @@ public class StudentEntity {
         this.birthDate = birthDate;
     }
 
-    @Basic
-    @Column(name = "sex")
-    public boolean isSex() {
+    @Column(name = "sex", nullable = true, insertable = true, updatable = true, length = 1, precision = 0)
+    public Boolean isSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(Boolean sex) {
         this.sex = sex;
     }
 
-    @Basic
-    @Column(name = "hostel_live")
+    @Column(name = "hostel_live", nullable = true, insertable = true, updatable = true, length = 2, precision = 0)
     public Boolean getHostelLive() {
         return hostelLive;
     }
@@ -76,31 +93,5 @@ public class StudentEntity {
         this.hostelLive = hostelLive;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        StudentEntity that = (StudentEntity) o;
-
-        if (id != that.id) return false;
-        if (sex != that.sex) return false;
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
-        if (birthDate != null ? !birthDate.equals(that.birthDate) : that.birthDate != null) return false;
-        if (hostelLive != null ? !hostelLive.equals(that.hostelLive) : that.hostelLive != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
-        result = 31 * result + (sex ? 1 : 0);
-        result = 31 * result + (hostelLive != null ? hostelLive.hashCode() : 0);
-        return result;
-    }
 }

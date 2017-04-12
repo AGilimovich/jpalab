@@ -6,34 +6,66 @@ import javax.persistence.*;
  * Created by Aleksandr on 12.04.2017.
  */
 @Entity
-@Table(name = "exam_result", schema = "students", catalog = "")
+@Table(name = "exam_result")
 public class ExamResultEntity {
-    private int id;
-    private byte result;
+    private Integer id;
+    private TecherEntity teacher;
+    private StudentEntity student;
+    private Byte result;
     private String note;
+    private ExamEntity exam;
 
     @Id
-    @Column(name = "id")
-    public int getId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, insertable = true, updatable = false, length = 10, precision = 0)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "result")
-    public byte getResult() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exam_id")
+    public ExamEntity getExam() {
+        return exam;
+    }
+
+    public void setExam(ExamEntity exam) {
+        this.exam = exam;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_id")
+    public TecherEntity getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(TecherEntity teacher) {
+        this.teacher = teacher;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id")
+    public StudentEntity getStudent() {
+        return student;
+    }
+
+    public void setStudent(StudentEntity student) {
+        this.student = student;
+    }
+
+    @Column(name = "result", nullable = true, insertable = true, updatable = true, length = 1, precision = 0)
+    public Byte getResult() {
         return result;
     }
 
-    public void setResult(byte result) {
+    public void setResult(Byte result) {
         this.result = result;
     }
 
-    @Basic
-    @Column(name = "note")
+    @Column(name = "note", nullable = true, insertable = true, updatable = true, length = 100, precision = 0)
     public String getNote() {
         return note;
     }
@@ -42,25 +74,4 @@ public class ExamResultEntity {
         this.note = note;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ExamResultEntity that = (ExamResultEntity) o;
-
-        if (id != that.id) return false;
-        if (result != that.result) return false;
-        if (note != null ? !note.equals(that.note) : that.note != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result1 = id;
-        result1 = 31 * result1 + (int) result;
-        result1 = 31 * result1 + (note != null ? note.hashCode() : 0);
-        return result1;
-    }
 }
