@@ -76,7 +76,7 @@ public class StudentEntity {
     }
 
     @Column(name = "sex", nullable = true, insertable = true, updatable = true, length = 1, precision = 0)
-    public Boolean isSex() {
+    public Boolean getSex() {
         return sex;
     }
 

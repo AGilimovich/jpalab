@@ -8,9 +8,9 @@ import com.itechart.entity.StudentEntity;
 
 public interface AbstractStudentDao {
 
-    StudentEntity create(StudentEntity studentEntity);
+    void create(StudentEntity studentEntity);
 
-    StudentEntity readById(Long id);
+    StudentEntity readById(Integer id);
 
     StudentEntity update(StudentEntity studentEntity);
 

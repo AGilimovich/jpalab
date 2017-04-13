@@ -15,24 +15,23 @@ public class JpaStudentDao implements AbstractStudentDao {
     }
 
     @Override
-    public StudentEntity create(StudentEntity studentEntity) {
-        StudentEntity student = entityManager.merge(studentEntity);
-        return student;
+    public void create(StudentEntity studentEntity) {
+        entityManager.persist(studentEntity);
     }
 
     @Override
-    public StudentEntity readById(Long id) {
-        return null;
+    public StudentEntity readById(Integer id) {
+        return entityManager.find(StudentEntity.class, id);
     }
 
     @Override
     public StudentEntity update(StudentEntity studentEntity) {
-        return null;
+        return entityManager.merge(studentEntity);
     }
 
     @Override
     public void delete(StudentEntity studentEntity) {
-
+        entityManager.remove(studentEntity);
     }
 
 }
