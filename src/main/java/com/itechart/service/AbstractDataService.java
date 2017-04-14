@@ -9,45 +9,53 @@ import java.util.Set;
  */
 public interface AbstractDataService {
 
-    void createNewStudent(StudentEntity studentEntity);
+    void createNewStudent(StudentEntity studentEntity) throws DataException;
 
-    void createNewCourse(TrainingCourseEntity trainingCourseEntity);
+    void createNewCourse(TrainingCourseEntity trainingCourseEntity) throws DataException;
 
-    void createNewExam(ExamEntity examEntity);
+    void createNewExam(ExamEntity examEntity) throws DataException;
 
-    void setExamResults(Set<ExamResultEntity> examResults);
+    void createNewTeacher(TecherEntity teacherEntity) throws DataException;
 
-    void setStudentResults(Set<StudentResultEntity> results);
+    void setExamResults(Set<ExamResultEntity> examResults) throws DataException;
 
-    StudentEntity updateStudent(StudentEntity studentEntity);
+    void setStudentResults(Set<StudentResultEntity> results) throws DataException;
 
-    TrainingCourseEntity updateCourse(TrainingCourseEntity trainingCourseEntity);
+    StudentEntity updateStudent(StudentEntity studentEntity) throws DataException;
 
-    ExamEntity updateExam(ExamEntity examEntity);
+    TrainingCourseEntity updateCourse(TrainingCourseEntity trainingCourseEntity) throws DataException;
 
-    ExamResultEntity updateExamResult(ExamResultEntity examResult);
+    ExamEntity updateExam(ExamEntity examEntity) throws DataException;
 
-    StudentResultEntity updateStudentResult(StudentResultEntity result);
+    ExamResultEntity updateExamResult(ExamResultEntity examResult) throws DataException;
 
-    void deleteStudent(StudentEntity studentEntity);
+    StudentResultEntity updateStudentResult(StudentResultEntity result) throws DataException;
 
-    void deleteCourse(TrainingCourseEntity trainingCourseEntity);
+    TecherEntity updateTeacher(TecherEntity techerEntity) throws DataException;
 
-    void deleteExam(ExamEntity examEntity);
+    void deleteStudent(StudentEntity studentEntity) throws DataException;
 
-    void deleteExamResult(ExamResultEntity examResult);
+    void deleteCourse(TrainingCourseEntity trainingCourseEntity) throws DataException;
 
-    void deleteStudentResult(StudentResultEntity result);
+    void deleteExam(ExamEntity examEntity) throws DataException;
 
-    StudentEntity findStudentById(Integer id);
+    void deleteExamResult(ExamResultEntity examResult) throws DataException;
 
-    TrainingCourseEntity findCourse(Integer id);
+    void deleteStudentResult(StudentResultEntity result) throws DataException;
 
-    ExamEntity findExam(Integer id);
+    void deleteTeacher(TecherEntity teacher) throws DataException;
 
-    ExamResultEntity findExamResult(Integer id);
+    StudentEntity findStudentById(Integer id) throws DataException;
 
-    StudentResultEntity findStudentResult(Integer id);
+    TrainingCourseEntity findCourseById(Integer id) throws DataException;
+
+    ExamEntity findExamById(Integer id) throws DataException;
+
+    ExamResultEntity findExamResultById(Integer id) throws DataException;
+
+    StudentResultEntity findStudentResultById(Integer id) throws DataException;
+
+    TecherEntity findTeacherById(Integer id) throws DataException;
 
 
 }

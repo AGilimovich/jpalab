@@ -2,6 +2,7 @@ package com.itechart.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,8 +17,16 @@ public class StudentEntity {
     private Date birthDate;
     private Boolean sex;
     private Boolean hostelLive;
-    private Set<ExamResultEntity> examResults;
-    private Set<StudentResultEntity> studentResults;
+    private Set<ExamResultEntity> examResults = new HashSet<>();
+    private Set<StudentResultEntity> studentResults = new HashSet<>();
+
+    public void addExamResult(ExamResultEntity examResultEntity) {
+        examResults.add(examResultEntity);
+    }
+
+    public void addStudentResult(StudentResultEntity studentResultEntity) {
+        studentResults.add(studentResultEntity);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +39,7 @@ public class StudentEntity {
         this.id = id;
     }
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
     public Set<StudentResultEntity> getStudentResults() {
         return studentResults;
     }
@@ -39,7 +48,7 @@ public class StudentEntity {
         this.studentResults = studentResults;
     }
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
     public Set<ExamResultEntity> getExamResults() {
         return examResults;
     }
@@ -93,5 +102,30 @@ public class StudentEntity {
         this.hostelLive = hostelLive;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        StudentEntity that = (StudentEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
+        if (birthDate != null ? !birthDate.equals(that.birthDate) : that.birthDate != null) return false;
+        if (sex != null ? !sex.equals(that.sex) : that.sex != null) return false;
+        return hostelLive != null ? hostelLive.equals(that.hostelLive) : that.hostelLive == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
+        result = 31 * result + (sex != null ? sex.hashCode() : 0);
+        result = 31 * result + (hostelLive != null ? hostelLive.hashCode() : 0);
+        return result;
+    }
 }

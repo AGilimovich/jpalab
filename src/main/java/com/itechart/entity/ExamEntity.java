@@ -2,6 +2,7 @@ package com.itechart.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,10 +13,17 @@ import java.util.Set;
 public class ExamEntity {
     private Integer id;
     private Timestamp date;
-    private Set<ExamResultEntity> examResults;
+    private Set<ExamResultEntity> examResults = new HashSet<>();
     private TecherEntity teacher;
-    private Set<StudentResultEntity> studentResults;
+    private Set<StudentResultEntity> studentResults = new HashSet<>();
     private TrainingCourseEntity trainingCourse;
+
+    public void addExamResult(ExamResultEntity examResultEntity) {
+        examResults.add(examResultEntity);
+    }
+    public void addStudentResult (StudentResultEntity studentResultEntity) {
+        studentResults.add(studentResultEntity);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +35,8 @@ public class ExamEntity {
     public void setId(Integer id) {
         this.id = id;
     }
-    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "exam")
     public Set<StudentResultEntity> getStudentResults() {
         return studentResults;
     }
@@ -57,7 +66,7 @@ public class ExamEntity {
     }
 
 
-    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.REMOVE)
     public Set<ExamResultEntity> getExamResults() {
         return examResults;
     }
@@ -75,5 +84,22 @@ public class ExamEntity {
         this.date = date;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        ExamEntity that = (ExamEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return date != null ? date.equals(that.date) : that.date == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
+    }
 }

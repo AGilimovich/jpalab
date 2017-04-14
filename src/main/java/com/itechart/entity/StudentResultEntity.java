@@ -88,8 +88,7 @@ public class StudentResultEntity implements Serializable {
             return false;
         if (result != null ? !result.equals(that.result) : that.result != null) return false;
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
-        if (note != null ? !note.equals(that.note) : that.note != null) return false;
-        return exam != null ? exam.equals(that.exam) : that.exam == null;
+        return note != null ? note.equals(that.note) : that.note == null;
 
     }
 
@@ -100,7 +99,6 @@ public class StudentResultEntity implements Serializable {
         result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
         result1 = 31 * result1 + (date != null ? date.hashCode() : 0);
         result1 = 31 * result1 + (note != null ? note.hashCode() : 0);
-        result1 = 31 * result1 + (exam != null ? exam.hashCode() : 0);
         return result1;
     }
 }

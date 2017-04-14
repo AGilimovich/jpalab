@@ -31,6 +31,6 @@ public class JpaExamDao implements AbstractExamDao {
 
     @Override
     public void delete(ExamEntity examEntity) {
-        entityManager.remove(examEntity);
+        entityManager.remove(entityManager.contains(examEntity) ? examEntity : entityManager.merge(examEntity));
     }
 }

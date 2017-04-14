@@ -32,6 +32,6 @@ public class JpaStudentResultDao implements AbstractStudentResultDao {
 
     @Override
     public void delete(StudentResultEntity studentResultEntity) {
-        entityManager.remove(studentResultEntity);
+        entityManager.remove(entityManager.contains(studentResultEntity) ? studentResultEntity : entityManager.merge(studentResultEntity));
     }
 }

@@ -33,6 +33,6 @@ public class JpaExamResultDao implements AbstractExamResultDao {
 
     @Override
     public void delete(ExamResultEntity examResultEntity) {
-        entityManager.remove(examResultEntity);
+        entityManager.remove(entityManager.contains(examResultEntity) ? examResultEntity : entityManager.merge(examResultEntity));
     }
 }

@@ -2,10 +2,12 @@ package com.itechart;
 
 import com.itechart.entity.*;
 import com.itechart.service.AbstractDataService;
+import com.itechart.service.DataException;
 import com.itechart.service.DataService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +17,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
  * Unit test.
@@ -34,8 +35,8 @@ public class AppTest {
     @Before
     public void init() {
         teacher = new TecherEntity();
-        teacher.setFirstName("sd");
-        teacher.setLastName("ll1");
+        teacher.setFirstName("Ivan");
+        teacher.setLastName("Ivanov");
 
         course = new TrainingCourseEntity();
         course.setName("Physics");
@@ -48,7 +49,7 @@ public class AppTest {
         exam.setTrainingCourse(course);
 
         student = new StudentEntity();
-        student.setFirstName("Александр2");
+        student.setFirstName("Александр");
         student.setLastName("Гилимович");
         dt = formatter.parseDateTime("12-11-1990");
         student.setBirthDate(new Date(dt.toDate().getTime()));
@@ -60,7 +61,6 @@ public class AppTest {
         examResult.setStudent(student);
         examResult.setExam(exam);
         examResult.setResult((byte) 5);
-        examResult.setNote("note");
 
         studentResult = new StudentResultEntity();
         studentResult.setStudent(student);
@@ -69,45 +69,63 @@ public class AppTest {
         studentResult.setExam(exam);
         dt = formatter.parseDateTime("13-04-2017");
         studentResult.setDate(new Date(dt.toDate().getTime()));
-        studentResult.setNote("note");
 
-        dataService.createNewStudent(student);
-        dataService.createNewCourse(course);
-        dataService.createNewExam(exam);
-        Set<ExamResultEntity> examResults = new HashSet<>();
-        examResults.add(examResult);
-        dataService.setExamResults(examResults);
-        Set<StudentResultEntity> studentResults = new HashSet<>();
-        studentResults.add(studentResult);
-        dataService.setStudentResults(studentResults);
+        student.addExamResult(examResult);
+        student.addStudentResult(studentResult);
+        course.setExam(exam);
+        try {
+            dataService.createNewStudent(student);
+            dataService.createNewTeacher(teacher);
+            dataService.createNewCourse(course);
+            Set<ExamResultEntity> examResults = new HashSet<>();
+            examResults.add(examResult);
+            dataService.setExamResults(examResults);
+            Set<StudentResultEntity> studentResults = new HashSet<>();
+            studentResults.add(studentResult);
+            dataService.setStudentResults(studentResults);
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @After
+    public void destroy() {
+        try {
+            dataService.deleteStudent(student);
+            dataService.deleteCourse(course);
+            dataService.deleteTeacher(teacher);
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void testUpdate() {
+    public void testStudentFetch() {
+        StudentEntity fetchedStudent = null;
+        try {
+            fetchedStudent = dataService.findStudentById(student.getId());
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
+        assertEquals("Александр", fetchedStudent.getFirstName());
+        assertEquals("Гилимович", fetchedStudent.getLastName());
+    }
+
+    @Test
+    public void testStudentUpdate() {
         student.setFirstName("Иван");
         student.setLastName("Иванов");
-        dataService.updateStudent(student);
-        assertEquals("Иван", student.getFirstName());
-        assertEquals("Иванов", student.getLastName());
+        student.setBirthDate(student.getBirthDate());
+        student.setSex(false);
+        StudentEntity updatedStudent = null;
+        try {
+            updatedStudent = dataService.updateStudent(student);
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
+        assertEquals("Иван", updatedStudent.getFirstName());
+        assertEquals("Иванов", updatedStudent.getLastName());
+        assertEquals(false, updatedStudent.getSex());
     }
-
-    @Test
-    public void testFetch() {
-        StudentEntity fetchedStudent = dataService.findStudentById(student.getId());
-        assertEquals("Иванов", fetchedStudent.getLastName());
-        assertEquals("Иван", fetchedStudent.getLastName());
-    }
-//
-//    @Test
-//    public void testDelete() {
-//        dataService.deleteStudent(student);
-//        dataService.deleteCourse(course);
-//        dataService.deleteExamResult(examResult);
-//        dataService.deleteExam(exam);
-//        dataService.deleteStudentResult(studentResult);
-//        StudentEntity fetchedStudent = dataService.findStudentById(student.getId());
-//        assertNull(fetchedStudent);
-//    }
-
 
 }

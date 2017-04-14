@@ -34,6 +34,6 @@ public class JpaTrainingCourseDao implements AbstractTrainingCourseDao {
 
     @Override
     public void delete(TrainingCourseEntity trainingCourseEntity) {
-        entityManager.remove(trainingCourseEntity);
+        entityManager.remove(entityManager.contains(trainingCourseEntity) ? trainingCourseEntity : entityManager.merge(trainingCourseEntity));
     }
 }

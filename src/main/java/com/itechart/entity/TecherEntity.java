@@ -1,6 +1,7 @@
 package com.itechart.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,9 +13,20 @@ public class TecherEntity {
     private Integer id;
     private String firstName;
     private String lastName;
-    private Set<ExamResultEntity> examResults;
-    private Set<ExamEntity> exams;
-    private Set<TrainingCourseEntity> trainingCourses;
+    private Set<ExamResultEntity> examResults = new HashSet<>();
+    private Set<ExamEntity> exams = new HashSet<>();
+    private Set<TrainingCourseEntity> trainingCourses = new HashSet<>();
+
+    public void addExamResult (ExamResultEntity examResultEntity) {
+        examResults.add(examResultEntity);
+    }
+    public void addExam(ExamEntity examEntity) {
+        exams.add(examEntity);
+    }
+
+    public void addTrainingCourses(TrainingCourseEntity trainingCourseEntity) {
+        trainingCourses.add(trainingCourseEntity);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +39,7 @@ public class TecherEntity {
         this.id = id;
     }
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacher")
     public Set<TrainingCourseEntity> getTrainingCourses() {
         return trainingCourses;
     }
@@ -36,7 +48,7 @@ public class TecherEntity {
         this.trainingCourses = trainingCourses;
     }
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacher")
     public Set<ExamEntity> getExams() {
         return exams;
     }
@@ -45,7 +57,7 @@ public class TecherEntity {
         this.exams = exams;
     }
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacher")
     public Set<ExamResultEntity> getExamResults() {
         return examResults;
     }
@@ -72,5 +84,24 @@ public class TecherEntity {
         this.lastName = lastName;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        TecherEntity that = (TecherEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
+        return lastName != null ? lastName.equals(that.lastName) : that.lastName == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        return result;
+    }
 }

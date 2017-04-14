@@ -31,7 +31,8 @@ public class JpaStudentDao implements AbstractStudentDao {
 
     @Override
     public void delete(StudentEntity studentEntity) {
-        entityManager.remove(studentEntity);
+        entityManager.remove(entityManager.contains(studentEntity) ? studentEntity : entityManager.merge(studentEntity));
+      //  entityManager.remove(studentEntity);
     }
 
 }

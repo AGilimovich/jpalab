@@ -1,6 +1,7 @@
 package com.itechart.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,8 +13,12 @@ public class TrainingCourseEntity {
     private Integer id;
     private String name;
     private ExamEntity exam;
-    private Set<StudentResultEntity> studentResults;
+    private Set<StudentResultEntity> studentResults = new HashSet<>();
     private TecherEntity teacher;
+
+    public void addStudentResult(StudentResultEntity studentResultEntity) {
+        studentResults.add(studentResultEntity);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +41,7 @@ public class TrainingCourseEntity {
         this.teacher = teacher;
     }
 
-    @OneToMany(mappedBy = "trainingCourse", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "trainingCourse", cascade = CascadeType.REMOVE)
     public Set<StudentResultEntity> getStudentResults() {
         return studentResults;
     }
@@ -45,7 +50,7 @@ public class TrainingCourseEntity {
         this.studentResults = studentResults;
     }
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "trainingCourse")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "trainingCourse", cascade = CascadeType.ALL)
     public ExamEntity getExam() {
         return exam;
     }
@@ -63,5 +68,22 @@ public class TrainingCourseEntity {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        TrainingCourseEntity that = (TrainingCourseEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return name != null ? name.equals(that.name) : that.name == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }

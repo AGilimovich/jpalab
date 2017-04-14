@@ -34,7 +34,8 @@ public class JpaTeacherDao implements AbstractTeacherDao {
 
     @Override
     public void delete(TecherEntity techerEntity) {
-        entityManager.remove(techerEntity);
+        entityManager.remove(entityManager.contains(techerEntity) ? techerEntity : entityManager.merge(techerEntity));
+
 
     }
 }

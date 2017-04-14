@@ -74,4 +74,24 @@ public class ExamResultEntity {
         this.note = note;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ExamResultEntity that = (ExamResultEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (result != null ? !result.equals(that.result) : that.result != null) return false;
+        return note != null ? note.equals(that.note) : that.note == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result1 = id != null ? id.hashCode() : 0;
+        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
+        result1 = 31 * result1 + (note != null ? note.hashCode() : 0);
+        return result1;
+    }
 }
