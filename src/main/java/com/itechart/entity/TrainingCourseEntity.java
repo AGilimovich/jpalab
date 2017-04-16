@@ -41,7 +41,7 @@ public class TrainingCourseEntity {
         this.teacher = teacher;
     }
 
-    @OneToMany(mappedBy = "trainingCourse", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "trainingCourse", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<StudentResultEntity> getStudentResults() {
         return studentResults;
     }

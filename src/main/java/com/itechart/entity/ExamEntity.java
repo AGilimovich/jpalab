@@ -36,7 +36,7 @@ public class ExamEntity {
         this.id = id;
     }
 
-    @OneToMany(mappedBy = "exam")
+    @OneToMany(mappedBy = "exam", fetch = FetchType.LAZY)
     public Set<StudentResultEntity> getStudentResults() {
         return studentResults;
     }
@@ -45,7 +45,7 @@ public class ExamEntity {
         this.studentResults = studentResults;
     }
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_course_id")
     public TrainingCourseEntity getTrainingCourse() {
         return trainingCourse;
@@ -66,7 +66,7 @@ public class ExamEntity {
     }
 
 
-    @OneToMany(mappedBy = "exam", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     public Set<ExamResultEntity> getExamResults() {
         return examResults;
     }

@@ -113,6 +113,26 @@ public class DataService implements AbstractDataService {
     }
 
     @Override
+    public void addExamResult(ExamResultEntity examResult) throws DataException {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        AbstractExamResultDao examResultDao = new JpaExamResultDao(entityManager);
+        EntityTransaction tx = entityManager.getTransaction();
+        try {
+            tx.begin();
+            examResultDao.create(examResult);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            throw new DataException(e);
+        } finally {
+            if (entityManager != null)
+                entityManager.close();
+        }
+
+    }
+
+
+    @Override
     public void setStudentResults(Set<StudentResultEntity> results) throws DataException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         AbstractStudentResultDao studentResultDao = new JpaStudentResultDao(entityManager);
@@ -122,6 +142,24 @@ public class DataService implements AbstractDataService {
             for (StudentResultEntity result : results) {
                 studentResultDao.create(result);
             }
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            throw new DataException(e);
+        } finally {
+            if (entityManager != null)
+                entityManager.close();
+        }
+    }
+
+    @Override
+    public void addStudentResult(StudentResultEntity result) throws DataException {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        AbstractStudentResultDao studentResultDao = new JpaStudentResultDao(entityManager);
+        EntityTransaction tx = entityManager.getTransaction();
+        try {
+            tx.begin();
+            studentResultDao.create(result);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -401,13 +439,18 @@ public class DataService implements AbstractDataService {
     }
 
     @Override
-    public ExamResultEntity findExamResultById(Integer id) throws DataException {
+    public Set<ExamResultEntity> findExamResultByExamId(Integer id) throws DataException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        AbstractExamResultDao examResultDao = new JpaExamResultDao(entityManager);
+        AbstractExamDao examDao = new JpaExamDao(entityManager);
+        EntityTransaction tx = entityManager.getTransaction();
         try {
-            ExamResultEntity er = examResultDao.readById(id);
+            tx.begin();
+            ExamEntity exam = examDao.readById(id);
+            Set<ExamResultEntity> er = exam.getExamResults();
+            tx.commit();
             return er;
         } catch (Exception e) {
+            tx.rollback();
             throw new DataException(e);
         } finally {
             if (entityManager != null)
@@ -416,18 +459,26 @@ public class DataService implements AbstractDataService {
     }
 
     @Override
-    public StudentResultEntity findStudentResultById(Integer id) throws DataException {
+    public Set<StudentResultEntity> findStudentResultsByStudentId(Integer id) throws DataException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        AbstractStudentResultDao studentResultDao = new JpaStudentResultDao(entityManager);
+//        AbstractStudentResultDao studentResultDao = new JpaStudentResultDao(entityManager);
+        AbstractStudentDao studentDao = new JpaStudentDao(entityManager);
+        EntityTransaction tx = entityManager.getTransaction();
         try {
-            StudentResultEntity sr = studentResultDao.readById(id);
+            tx.begin();
+            StudentEntity st = studentDao.readById(id);
+            Set<StudentResultEntity> sr = st.getStudentResults();
+            tx.commit();
             return sr;
         } catch (Exception e) {
+            tx.rollback();
             throw new DataException(e);
         } finally {
             if (entityManager != null)
                 entityManager.close();
         }
+
+
     }
 
     @Override

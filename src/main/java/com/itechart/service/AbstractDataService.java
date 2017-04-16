@@ -19,6 +19,10 @@ public interface AbstractDataService {
 
     void setExamResults(Set<ExamResultEntity> examResults) throws DataException;
 
+    void addExamResult(ExamResultEntity examResult) throws DataException;
+
+    void addStudentResult(StudentResultEntity result) throws DataException;
+
     void setStudentResults(Set<StudentResultEntity> results) throws DataException;
 
     StudentEntity updateStudent(StudentEntity studentEntity) throws DataException;
@@ -51,9 +55,9 @@ public interface AbstractDataService {
 
     ExamEntity findExamById(Integer id) throws DataException;
 
-    ExamResultEntity findExamResultById(Integer id) throws DataException;
+    Set<ExamResultEntity> findExamResultByExamId(Integer id) throws DataException;
 
-    StudentResultEntity findStudentResultById(Integer id) throws DataException;
+    Set<StudentResultEntity> findStudentResultsByStudentId(Integer id) throws DataException;
 
     TecherEntity findTeacherById(Integer id) throws DataException;
 

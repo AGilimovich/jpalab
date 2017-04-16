@@ -39,7 +39,7 @@ public class TecherEntity {
         this.id = id;
     }
 
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     public Set<TrainingCourseEntity> getTrainingCourses() {
         return trainingCourses;
     }
@@ -48,7 +48,7 @@ public class TecherEntity {
         this.trainingCourses = trainingCourses;
     }
 
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     public Set<ExamEntity> getExams() {
         return exams;
     }
@@ -57,7 +57,7 @@ public class TecherEntity {
         this.exams = exams;
     }
 
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     public Set<ExamResultEntity> getExamResults() {
         return examResults;
     }
