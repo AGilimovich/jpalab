@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -459,15 +460,13 @@ public class DataService implements AbstractDataService {
     }
 
     @Override
-    public Set<StudentResultEntity> findStudentResultsByStudentId(Integer id) throws DataException {
+    public List<StudentResultEntity> findStudentResultsForStudent(StudentEntity student) throws DataException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-//        AbstractStudentResultDao studentResultDao = new JpaStudentResultDao(entityManager);
-        AbstractStudentDao studentDao = new JpaStudentDao(entityManager);
+        AbstractStudentResultDao studentResultDao = new JpaStudentResultDao(entityManager);
         EntityTransaction tx = entityManager.getTransaction();
         try {
             tx.begin();
-            StudentEntity st = studentDao.readById(id);
-            Set<StudentResultEntity> sr = st.getStudentResults();
+            List<StudentResultEntity> sr = studentResultDao.readByStudent(student);
             tx.commit();
             return sr;
         } catch (Exception e) {

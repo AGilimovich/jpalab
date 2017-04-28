@@ -13,8 +13,8 @@ import org.junit.Test;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
-
 
 import static org.junit.Assert.assertEquals;
 
@@ -131,15 +131,11 @@ public class AppTest {
     }
 
     @Test
-    public void testStudentResultFindByStudentId() {
+    public void testStudentResultFindForStudent() throws DataException {
         StudentResultEntity studentResult = null;
-        try {
-            Set<StudentResultEntity> fetchedStudentResults = dataService.findStudentResultsByStudentId(student.getId());
-            if (fetchedStudentResults != null) {
-                studentResult = fetchedStudentResults.iterator().next();
-            }
-        } catch (DataException e) {
-            e.printStackTrace();
+        List<StudentResultEntity> fetchedStudentResults = dataService.findStudentResultsForStudent(student);
+        if (fetchedStudentResults != null) {
+            studentResult = fetchedStudentResults.iterator().next();
         }
         assertEquals(Byte.valueOf((byte) 10), studentResult.getResult());
     }

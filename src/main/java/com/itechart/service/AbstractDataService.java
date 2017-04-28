@@ -2,6 +2,7 @@ package com.itechart.service;
 
 import com.itechart.entity.*;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -57,7 +58,7 @@ public interface AbstractDataService {
 
     Set<ExamResultEntity> findExamResultByExamId(Integer id) throws DataException;
 
-    Set<StudentResultEntity> findStudentResultsByStudentId(Integer id) throws DataException;
+    List<StudentResultEntity> findStudentResultsForStudent(StudentEntity studentEntity) throws DataException;
 
     TecherEntity findTeacherById(Integer id) throws DataException;
 

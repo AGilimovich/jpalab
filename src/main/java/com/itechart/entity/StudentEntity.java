@@ -39,7 +39,7 @@ public class StudentEntity {
         this.id = id;
     }
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<StudentResultEntity> getStudentResults() {
         return studentResults;
     }
